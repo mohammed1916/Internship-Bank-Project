@@ -6,9 +6,6 @@ import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:bank/Models/Customer.dart';
-import 'package:bank/Test/data.dart';
-
 class TransactionDatabaseController {
   static TransactionDatabaseController _databaseController;
   static Database _database;
@@ -60,21 +57,6 @@ class TransactionDatabaseController {
     );
     debugPrint(_database.toString());
   }
-
-  // Future<List<Customer>> customersBasic() async {
-  //   final db = await singletonDatabase();
-
-  //   final List<Map<String, dynamic>> maps = await db.query('transactions');
-//
-  //   // List<Map<String, dynamic> --> List<Customer>.
-  //   return List.generate(maps.length, (i) {
-  //     return Customer(
-  //       id: maps[i]['id'],
-  //       name: maps[i]['name'],
-  //       email: maps[i]['email'],
-  //     );
-  //   });
-  // }
 
   Future<List<TransactionTable>> getCustomersList() async {
     final db = await singletonDatabase();

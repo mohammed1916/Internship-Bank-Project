@@ -1,5 +1,3 @@
-import 'package:bank/Models/Customer.dart';
-
 class TransactionTable {
   final int id;
   final String sender;

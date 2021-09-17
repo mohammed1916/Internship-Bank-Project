@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:bank/Models/Customer.dart';
 import 'package:bank/Utils/db_controller.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:intl/intl.dart';
 
 class InitializeDummyData {
   int length = 10;
@@ -48,54 +47,3 @@ class InitializeDummyData {
     });
   }
 }
-//  // Create dummy customer and add it to the customers table
-//   var user_1 = Customer(
-//     id: 0,
-//     name: 'User_1',
-//     balance: 35,
-//   );
-//   var user_2 = Customer(
-//     id: 0,
-//     name: 'User_1',
-//     balance: 35,
-//   );
-//   var user_3 = Customer(
-//     id: 0,
-//     name: 'User_1',
-//     balance: 35,
-//   );
-//   var user_4 = Customer(
-//     id: 0,
-//     name: 'User_1',
-//     balance: 35,
-//   );
-//   var user_5 = Customer(
-//     id: 0,
-//     name: 'User_1',
-//     balance: 35,
-//   );
-//   var user_6 = Customer(
-//     id: 0,
-//     name: 'User_1',
-//     balance: 35,
-//   );
-//   var user_7 = Customer(
-//     id: 0,
-//     name: 'User_1',
-//     balance: 35,
-//   );
-//   var user_8 = Customer(
-//     id: 0,
-//     name: 'User_1',
-//     balance: 35,
-//   );
-//   var user_9 = Customer(
-//     id: 0,
-//     name: 'User_1',
-//     balance: 35,
-//   );
-//   var user_10 = Customer(
-//     id: 0,
-//     name: 'User_1',
-//     balance: 35,
-//   );

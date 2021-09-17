@@ -1,12 +1,10 @@
 import 'package:bank/Models/Customer.dart';
 import 'package:bank/Models/TransactionTable.dart';
 import 'package:bank/Screens/AlertPopUp.dart';
-import 'package:bank/Screens/AllCustomers.dart';
 import 'package:bank/Utils/db_controller.dart';
 import 'package:bank/Utils/transaction_db_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 
 class TransactAmount extends StatefulWidget {
   final List<TransactionTable> transactionsList;

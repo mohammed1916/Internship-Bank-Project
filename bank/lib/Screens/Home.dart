@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
       debugPrint("_updateTransactions");
       _updateTranscations();
     }
-    
+
     debugPrint(customers.toString());
     return Scaffold(
       appBar: AppBar(
@@ -105,11 +105,12 @@ class _HomeState extends State<Home> {
                 ),
                 Expanded(
                   child: GestureDetector(
-                    onTap: () => {
-                      if (completedTransactionUpdate)
-                        {setTranscationList();
-                          onTransaction(TransactionHistory('Transaction History',
-                            transactionsList, transactionDatabaseController))}
+                    onTap: () {
+                      if (completedTransactionUpdate) {
+                        setTranscationList();
+                        onTransaction(TransactionHistory('Transaction History',
+                            transactionsList, transactionDatabaseController));
+                      }
                     },
                     child: Container(
                       height: 200,
