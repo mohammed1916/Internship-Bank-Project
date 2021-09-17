@@ -1,6 +1,8 @@
+import 'package:bank/Models/TransactionTable.dart';
 import 'package:bank/Screens/Profile.dart';
 import 'package:bank/Utils/db_controller.dart';
 import 'package:bank/Models/Customer.dart';
+import 'package:bank/Utils/transaction_db_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
@@ -8,17 +10,18 @@ import 'package:animations/animations.dart';
 
 class AllCustomers extends StatefulWidget {
   final String title;
-  const AllCustomers(this.title);
+  final List<Customer> customers;
+  final DatabaseController databaseController;
+  final TransactionDatabaseController transactionDatabaseController;
+  final List<TransactionTable> transactionsList;
+  const AllCustomers(this.title, this.customers, this.databaseController,
+      this.transactionDatabaseController, this.transactionsList);
 
   @override
   _AllCustomersState createState() => _AllCustomersState();
 }
 
 class _AllCustomersState extends State<AllCustomers> {
-  DatabaseController databaseController = DatabaseController();
-  List<Customer> customers;
-  int count = 0;
-  bool completedUpdate = false;
   var colourList = [
     Colors.blue[400],
     Colors.blue[500],
@@ -34,46 +37,18 @@ class _AllCustomersState extends State<AllCustomers> {
 
   @override
   Widget build(BuildContext context) {
-    if (customers == null) {
-      customers = <Customer>[];
-      debugPrint("_updateCustomers");
-      _updateCustomers();
-    }
     debugPrint("allCustomers : Constructor");
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: completedUpdate
-          ? buildCustomersList()
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
-    );
-  }
-
-  void _updateCustomers() {
-    completedUpdate = false;
-    debugPrint("_updateCustomers");
-    final Future<Database> dbFuture = databaseController.singletonDatabase();
-    dbFuture.then((database) {
-      Future<List<Customer>> customerListFuture =
-          databaseController.customers(database);
-      customerListFuture.then((customersList) {
-        setState(() {
-          debugPrint("Setting State");
-          this.customers = customersList;
-          this.count = customersList.length;
-          completedUpdate = true;
-        });
-      });
-    });
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: buildCustomersList());
   }
 
   ListView buildCustomersList() {
     debugPrint("Return List");
     return ListView.builder(
-      itemCount: count,
+      itemCount: widget.customers.length,
       itemBuilder: (BuildContext context, int position) {
         return Card(
           color: Colors.white,
@@ -81,27 +56,33 @@ class _AllCustomersState extends State<AllCustomers> {
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: colourList[position % colourList.length],
-              child: Text(getInitailLetters(this.customers[position].name),
+              child: Text(getInitailLetters(widget.customers[position].name),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
-            title: Text(this.customers[position].name,
+            title: Text(widget.customers[position].name,
                 style: TextStyle(fontWeight: FontWeight.bold)),
             subtitle: Text(
-              (this.customers[position].accountNumber).toString(),
+              (widget.customers[position].accountNumber).toString(),
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
             onTap: () {
               debugPrint("tap $position");
+              onTransaction(Profile(
+                  widget.customers[position],
+                  widget.customers,
+                  widget.databaseController,
+                  widget.transactionDatabaseController,
+                  widget.transactionsList));
               // navigateToDetail(this.customers[position], 'Edit');
-              OpenContainer(
-                openBuilder: (context, _) =>
-                    Profile(customers[position], customers, databaseController),
-                closedBuilder: (context, _) => Container(
-                  decoration: BoxDecoration(
-                    color: colourList[position % colourList.length],
-                  ),
-                ),
-              );
+              // OpenContainer(
+              //   openBuilder: (context, _) =>
+              //       Profile(customers[position], customers, databaseController),
+              //   closedBuilder: (context, _) => Container(
+              //     decoration: BoxDecoration(
+              //       color: colourList[position % colourList.length],
+              //     ),
+              //   ),
+              // );
             },
           ),
         );
@@ -111,6 +92,11 @@ class _AllCustomersState extends State<AllCustomers> {
 
   getInitailLetters(String title) {
     return title.substring(0, 2);
+  }
+
+  onTransaction(StatefulWidget swidget) {
+    debugPrint("Navigator");
+    Navigator.push(context, MaterialPageRoute(builder: (context) => swidget));
   }
 }
 

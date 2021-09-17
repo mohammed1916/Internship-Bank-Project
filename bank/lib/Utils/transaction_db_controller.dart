@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bank/Models/TransactionHistory.dart';
+import 'package:bank/Models/TransactionTable.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:path/path.dart';
@@ -9,23 +9,27 @@ import 'package:sqflite/sqflite.dart';
 import 'package:bank/Models/Customer.dart';
 import 'package:bank/Test/data.dart';
 
-class DatabaseController {
-  static DatabaseController _databaseController;
+class TransactionDatabaseController {
+  static TransactionDatabaseController _databaseController;
   static Database _database;
 
-  DatabaseController._createInstance();
+  setDatabase(Database database) {
+    _database = database;
+  }
 
-  factory DatabaseController() {
+  TransactionDatabaseController._createInstance();
+
+  factory TransactionDatabaseController() {
     if (_databaseController == null) {
       debugPrint("Creating Singleton Controller");
-      _databaseController = DatabaseController._createInstance();
+      _databaseController = TransactionDatabaseController._createInstance();
     }
     return _databaseController;
   }
 
   Future<Database> singletonDatabase() async {
     if (_database == null) {
-      debugPrint("Initailizing the singleton database");
+      debugPrint("Initailizing the singleton database transaction");
       _database = await initializeDatabase();
     }
     return _database;
@@ -45,17 +49,16 @@ class DatabaseController {
     return database;
   }
 
-  Future<void> insertCustomer(
-      TransactionTable transactionTable, Database db) async {
-    debugPrint("Inserting Customer");
+  Future<void> insertCustomer(TransactionTable transactionTable) async {
+    debugPrint("Inserting Transaction");
     // final db = await singletonDatabase();
 
-    await db.insert(
+    await _database.insert(
       'transactions',
       transactionTable.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    debugPrint(db.toString());
+    debugPrint(_database.toString());
   }
 
   // Future<List<Customer>> customersBasic() async {
@@ -73,7 +76,8 @@ class DatabaseController {
   //   });
   // }
 
-  Future<List<TransactionTable>> getCustomersList(Database db) async {
+  Future<List<TransactionTable>> getCustomersList() async {
+    final db = await singletonDatabase();
     final List<Map<String, dynamic>> maps = await db.query('transactions');
     return List.generate(maps.length, (i) {
       return TransactionTable(

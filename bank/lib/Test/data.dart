@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:bank/Models/Customer.dart';
 import 'package:bank/Utils/db_controller.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:intl/intl.dart';
 
 class InitializeDummyData {
   int length = 10;
@@ -20,14 +21,15 @@ class InitializeDummyData {
 
     return List.generate(length, (i) {
       debugPrint("$i Customer created");
-      var bal = new Random().nextDouble();
-      bal = (bal * 100000.0).toDouble();
+      var bal = (new Random().nextDouble()) * 100000.0;
 
-      int accNo = ((new Random().nextDouble()) % 100).toInt();
+      debugPrint("Double");
+      debugPrint(bal.toString());
+
       return new Customer(
         id: i,
         name: 'Customer_$i',
-        accountNumber: accNo,
+        accountNumber: 125500927 + i,
         email: 'email$i@gmail.com',
         balance: bal,
         accountType: accType[new Random().nextInt(4)],

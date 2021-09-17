@@ -94,9 +94,9 @@ class DatabaseController {
 
   Future<void> updateCustomer(Customer customer) async {
     final db = await singletonDatabase();
-
+    debugPrint(customer.toString());
     await db.update(
-      'customer',
+      'customers',
       customer.toMap(),
       where: 'id = ?',
       whereArgs: [customer.id],
@@ -107,7 +107,7 @@ class DatabaseController {
     final db = await singletonDatabase();
 
     await db.delete(
-      'customer',
+      'customers',
       where: 'id = ?',
       whereArgs: [id],
     );

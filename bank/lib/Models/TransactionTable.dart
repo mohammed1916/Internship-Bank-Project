@@ -4,7 +4,7 @@ class TransactionTable {
   final int id;
   final String sender;
   final String receiver;
-  final DateTime date;
+  final String date;
   double amount;
 
   TransactionTable({
